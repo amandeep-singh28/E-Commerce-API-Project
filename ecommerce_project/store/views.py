@@ -16,9 +16,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def get_permissions(self):
-        if self.get_permissions in ["GET"]:
+        if self.request.method == 'GET':
             return [IsAuthenticated()] # GET Product -> User allowed
-        return [IsAdminUser()] # POST, UPDATE, DELETE Product -> ADMIN
+        else: 
+            permission_classes = [IsAdminUser()]
+        
+        return [permission() for permission in permission_classes] # POST, UPDATE, DELETE Product -> ADMIN
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
