@@ -19,7 +19,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    created-at = models.DateTimeField(auto_now = True)
+    created_at = models.DateTimeField(auto_now = True)
 
     def __str__(self):
         return f"order {self.id}"
