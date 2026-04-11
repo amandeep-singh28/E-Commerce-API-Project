@@ -22,4 +22,17 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id', 'user', 'created_at', 'items']
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+
+        # Create order
+        order = Order.objects.create(**validated_data)
+
+        # Create order items
+        for item in items_data:
+            OrderItem.objects.create(order=order, **item)
+
+        return order
