@@ -10,10 +10,7 @@ document.getElementById("login-form").addEventListener("submit", async function(
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
+            body: JSON.stringify({ username, password })
         });
 
         const data = await response.json();
@@ -23,12 +20,16 @@ document.getElementById("login-form").addEventListener("submit", async function(
             return;
         }
 
-        // ✅ Store tokens
+        // Store tokens
         localStorage.setItem("access", data.access);
         localStorage.setItem("refresh", data.refresh);
 
-        // ✅ TEMP: redirect to user page (we'll improve later)
-        window.location.href = "user.html";
+        // 🔥 SIMPLE ROLE CHECK
+        if (username === "admin") {
+            window.location.href = "admin.html";
+        } else {
+            window.location.href = "user.html";
+        }
 
     } catch (error) {
         document.getElementById("error").innerText = "Something went wrong";
