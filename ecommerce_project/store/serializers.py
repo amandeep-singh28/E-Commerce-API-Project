@@ -12,13 +12,12 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = ['product', 'quantity']
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(source='orderitem_set', many=True, read_only=True) #Nested Serializer
+    items = OrderItemSerializer(source = 'orderitem_set', many = True)
 
     class Meta:
         model = Order
@@ -26,13 +25,16 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']
 
     def create(self, validated_data):
-        items_data = validated_data.pop('items')
+        items_data = validated_data.pop('orderitem_set')
 
-        # Create order
+        # Create Order with user (passed from view)
         order = Order.objects.create(**validated_data)
 
-        # Create order items
         for item in items_data:
-            OrderItem.objects.create(order=order, **item)
+            OrderItem.objects.create(
+                order=order,
+                product=item['product'],
+                quantity=item['quantity']
+            )
 
         return order
