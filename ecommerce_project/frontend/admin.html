@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+
+    <h2>Admin Dashboard</h2>
+
+    <button onclick="logout()">Logout</button>
+
+    <h3>Add Category</h3>
+    <input type="text" id="category-name" placeholder="Category name">
+    <button onclick="addCategory()">Add</button>
+
+    <h3>Add Product</h3>
+    <input type="text" id="product-name" placeholder="Product name"><br><br>
+    <input type="number" id="product-price" placeholder="Price"><br><br>
+    <input type="text" id="product-description" placeholder="Description"><br><br>
+    <input type="number" id="product-category" placeholder="Category ID"><br><br>
+    <button onclick="addProduct()">Add Product</button>
+
+    <h3>Products</h3>
+    <ul id="product-list"></ul>
+
+    <script src="js/admin.js"></script>
+
+    <script>
+        function logout() {
+            localStorage.removeItem("access");
+            localStorage.removeItem("refresh");
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+</html>
