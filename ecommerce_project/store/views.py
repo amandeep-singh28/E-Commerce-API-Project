@@ -27,7 +27,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         if self.request.method == 'GET':
             return [IsAuthenticated()] # GET Product -> User allowed
         else: 
-            permission_classes = [IsAdminUser()]
+            permission_classes = [IsAdminUser]
         
         return [permission() for permission in permission_classes] # POST, UPDATE, DELETE Product -> ADMIN
 
