@@ -2,24 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - E-Commerce API</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <h2>Login</h2>
+    <div class="glass-panel">
+        <h2>Login</h2>
 
-    <form id="login-form">
-        <label>Username:</label><br>
-        <input type="text" id="username" required><br><br>
+        <form id="login-form">
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
 
-        <label>Password:</label><br>
-        <input type="password" id="password" required><br><br>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
+            <button type="submit">Sign In</button>
+        </form>
 
-    <p id="error" style="color: red;"></p>
+        <p id="error" style="color: #ef4444;"></p>
+    </div>
 
     <script src="js/auth.js"></script>
 
