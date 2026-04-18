@@ -1,31 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
+    <title>Customer Portal - Premium Commerce</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
 
     <div class="glass-panel dashboard-panel">
         <div class="header">
-            <h2>User Dashboard</h2>
+            <h2>Discover Products</h2>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
-        <h3>Products</h3>
-        <ul id="product-list"></ul>
+        <div class="layout-split">
+            <!-- Left Side: Products -->
+            <div>
+                <h3 style="margin-top: 0;">Featured Items</h3>
+                <ul id="product-list" class="products-grid">
+                    <!-- Injected by JS -->
+                </ul>
+            </div>
 
-        <hr>
-
-        <h3>Cart</h3>
-        <ul id="cart-list"></ul>
-
-        <button onclick="placeOrder()" style="margin-top: 1.5rem; width: 100%;">Place Order</button>
+            <!-- Right Side: Cart -->
+            <div>
+                <div class="cart-panel">
+                    <h3 style="margin-top: 0; color: #fff;">Your Cart</h3>
+                    <ul id="cart-list" class="cart-list">
+                        <!-- Injected by JS -->
+                    </ul>
+                    
+                    <button onclick="placeOrder()" style="margin-top: 1.5rem; width: 100%;">Checkout Now</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="js/user.js"></script>
 
@@ -36,7 +49,5 @@
             window.location.href = "login.html";
         }
     </script>
-
 </body>
-
 </html>
