@@ -26,15 +26,27 @@ function showToast(message, type = 'success') {
 }
 
 // 📦 Load Products
-async function loadProducts() {
+async function loadProducts(url = "http://127.0.0.1:8000/api/products/") {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/products/", {
+        const response = await fetch(url, {
             headers: { "Authorization": "Bearer " + token }
         });
 
         const data = await response.json();
         const list = document.getElementById("product-list");
         list.innerHTML = "";
+
+        // Setup Pagination Buttons
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        
+        if (prevBtn && nextBtn) {
+            prevBtn.disabled = !data.previous;
+            nextBtn.disabled = !data.next;
+            
+            prevBtn.onclick = () => { if(data.previous) loadProducts(data.previous); };
+            nextBtn.onclick = () => { if(data.next) loadProducts(data.next); };
+        }
 
         if(data.results) {
             data.results.forEach(product => {
