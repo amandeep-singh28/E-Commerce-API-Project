@@ -23,6 +23,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ['name']
     ordering_fields = ['price']
 
+    def get_serializer(self, *args, **kwargs):
+        """Allow bulk creation if the data sent is a list."""
+        if isinstance(kwargs.get("data", {}), list):
+            kwargs["many"] = True
+        return super(ProductViewSet, self).get_serializer(*args, **kwargs)
+
     def get_permissions(self):
         if self.request.method == 'GET':
             return [IsAuthenticated()] # GET Product -> User allowed
