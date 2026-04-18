@@ -4,34 +4,61 @@ if (!token) {
     window.location.href = "login.html";
 }
 
+// 🍞 Toast Notification System
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = type === 'success' 
+        ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`
+        : `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+
+    toast.innerHTML = `${icon} <span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 // 📦 Load Products
 async function loadProducts() {
-    const response = await fetch("http://127.0.0.1:8000/api/products/", {
-        headers: {
-            "Authorization": "Bearer " + token
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/products/", {
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        const data = await response.json();
+        const list = document.getElementById("product-list");
+        list.innerHTML = "";
+
+        if(data.results) {
+            data.results.forEach(product => {
+                const li = document.createElement("li");
+                
+                const categoryText = product.category_name 
+                    ? `<span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;">(${product.category_name})</span>` 
+                    : "";
+
+                li.innerHTML = `
+                    <div style="flex:1;">
+                        <span style="font-weight: 500;">${product.name}</span>
+                        <span style="color: var(--accent); font-weight: 600; margin-left: 0.5rem;">₹${product.price}</span>
+                        ${categoryText}
+                    </div>
+                    <button class="logout-btn" style="padding: 0.4rem 0.8rem;" onclick="deleteProduct(${product.id})">Delete</button>
+                `;
+
+                list.appendChild(li);
+            });
         }
-    });
-
-    const data = await response.json();
-
-    const list = document.getElementById("product-list");
-    list.innerHTML = "";
-
-    data.results.forEach(product => {
-        const li = document.createElement("li");
-
-        // ✅ FIX: only show category if exists
-        const categoryText = product.category_name 
-            ? ` (${product.category_name})` 
-            : "";
-
-        li.innerHTML = `
-            ${product.name} - ₹${product.price}${categoryText}
-            <button onclick="deleteProduct(${product.id})">Delete</button>
-        `;
-
-        list.appendChild(li);
-    });
+    } catch(e) {
+        showToast("Error loading products", "error");
+    }
 }
 
 // ➕ Add Category
@@ -39,7 +66,7 @@ async function addCategory() {
     const name = document.getElementById("category-name").value;
 
     if (!name) {
-        alert("Enter category name");
+        showToast("Enter category name", "error");
         return;
     }
 
@@ -53,11 +80,11 @@ async function addCategory() {
     });
 
     if (response.ok) {
-        alert("Category added");
+        showToast("Category added!");
         document.getElementById("category-name").value = "";
         loadCategories(); // refresh dropdown
     } else {
-        alert("Error adding category");
+        showToast("Error adding category", "error");
     }
 }
 
@@ -68,6 +95,11 @@ async function addProduct() {
     const description = document.getElementById("product-description").value;
     const selectedCategory = document.getElementById("product-category").value;
     const newCategory = document.getElementById("new-category").value.trim();
+
+    if(!name || !price) {
+        showToast("Name and Price are required", "error");
+        return;
+    }
 
     let categoryId = selectedCategory;
 
@@ -85,13 +117,10 @@ async function addProduct() {
         if (categoryResponse.ok) {
             const categoryData = await categoryResponse.json();
             categoryId = categoryData.id;
-
-            alert("New category created!");
-
-            // refresh dropdown
+            showToast("New category created!");
             await loadCategories();
         } else {
-            alert("Error creating category");
+            showToast("Error creating category", "error");
             return;
         }
     }
@@ -112,7 +141,7 @@ async function addProduct() {
     });
 
     if (response.ok) {
-        alert("Product added successfully!");
+        showToast("Product added successfully!");
 
         // clear fields
         document.getElementById("product-name").value = "";
@@ -122,7 +151,7 @@ async function addProduct() {
 
         loadProducts();
     } else {
-        alert("Error adding product");
+        showToast("Error adding product", "error");
     }
 }
 
@@ -136,10 +165,10 @@ async function deleteProduct(id) {
     });
 
     if (response.ok) {
-        alert("Deleted");
+        showToast("Deleted product");
         loadProducts();
     } else {
-        alert("Error deleting");
+        showToast("Error deleting", "error");
     }
 }
 
@@ -152,16 +181,17 @@ async function loadCategories() {
     });
 
     const data = await response.json();
-
     const dropdown = document.getElementById("product-category");
     dropdown.innerHTML = "";
 
-    data.results.forEach(category => {
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.text = category.name;
-        dropdown.appendChild(option);
-    });
+    if (data.results) {
+        data.results.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category.id;
+            option.text = category.name;
+            dropdown.appendChild(option);
+        });
+    }
 }
 
 // 🚀 Initial Load
