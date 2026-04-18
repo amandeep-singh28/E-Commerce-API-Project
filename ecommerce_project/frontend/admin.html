@@ -1,61 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Area - Premium Commerce</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
 
     <div class="glass-panel dashboard-panel">
         <div class="header">
-            <h2>Admin Dashboard</h2>
+            <h2>Admin Area</h2>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
-        <!-- PRODUCT -->
-        <h3>Add Product</h3>
-
-        <div class="grid-form">
-            <div class="input-group">
-                <label>Product Name</label>
-                <input type="text" id="product-name" placeholder="Enter product name">
-            </div>
+        <div class="layout-split-admin">
             
-            <div class="input-group">
-                <label>Price</label>
-                <input type="number" id="product-price" placeholder="Price">
-            </div>
-            
-            <div class="input-group full-width">
-                <label>Description</label>
-                <input type="text" id="product-description" placeholder="Short description">
+            <!-- Left Side: Add Product Form -->
+            <div>
+                <h3 style="margin-top: 0;">Publish New Product</h3>
+                <div class="grid-form">
+                    <div class="input-group full-width">
+                        <label>Product Name</label>
+                        <input type="text" id="product-name" placeholder="E.g., MacBook Pro">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Price</label>
+                        <input type="number" id="product-price" placeholder="Amount">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Select Category</label>
+                        <select id="product-category"></select>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label>Or Add New Category</label>
+                        <input type="text" id="new-category" placeholder="Leave empty if selecting above">
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label>Description</label>
+                        <input type="text" id="product-description" placeholder="Brief details about the product">
+                    </div>
+
+                    <div class="input-group full-width">
+                        <button onclick="addProduct()">Publish Product</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="input-group">
-                <label>Select Category:</label>
-                <select id="product-category"></select>
+            <!-- Right Side: List -->
+            <div>
+                <h3 style="margin-top: 0;">Manage Inventory</h3>
+                <ul id="product-list" class="admin-list">
+                    <!-- Injected by JS -->
+                </ul>
             </div>
 
-            <div class="input-group">
-                <label>Or Add New Category:</label>
-                <input type="text" id="new-category" placeholder="Type new category if not listed">
-            </div>
-
-            <div class="input-group full-width">
-                <button onclick="addProduct()">Add Product</button>
-            </div>
         </div>
-
-        <hr>
-
-        <!-- PRODUCT LIST -->
-        <h3>Products Directory</h3>
-        <ul id="product-list"></ul>
     </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="js/admin.js"></script>
 
@@ -66,7 +74,5 @@
             window.location.href = "login.html";
         }
     </script>
-
 </body>
-
 </html>
