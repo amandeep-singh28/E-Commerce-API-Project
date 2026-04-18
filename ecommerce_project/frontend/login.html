@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - E-Commerce API</title>
+    <title>Login - Premium Commerce</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
     <div class="glass-panel">
-        <h2>Login</h2>
+        <div class="login-header">
+            <div class="auth-logo">
+                <svg xmlns="http://www.w3.org/polygons" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2>Welcome Back</h2>
+        </div>
 
-        <form id="login-form">
+        <form id="login-form" class="form-group">
             <div class="input-group">
                 <label>Username</label>
                 <input type="text" id="username" placeholder="Enter your username" required>
@@ -19,13 +26,13 @@
 
             <div class="input-group">
                 <label>Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
+                <input type="password" id="password" placeholder="••••••••" required>
             </div>
 
-            <button type="submit">Sign In</button>
+            <button type="submit" style="margin-top: 1rem;">Sign In to Dashboard</button>
         </form>
 
-        <p id="error" style="color: #ef4444;"></p>
+        <p id="error" style="color: var(--danger-hover); text-align: center; margin-top: 1.5rem; font-size: 0.9rem;"></p>
     </div>
 
     <script src="js/auth.js"></script>
