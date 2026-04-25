@@ -137,4 +137,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5,
 }
 
+
+
 CORS_ALLOW_ALL_ORIGINS = True
